@@ -119,7 +119,7 @@ export class Manager extends HTMLManager {
             })
             console.log('views', all_view_promises);
             let all_views = await Promise.all(all_view_promises);
-            let bqplot_figure_views = all_views.filter((view) => view.model.name == 'FigureModel');
+            let bqplot_figure_views = all_views.filter((view) => (view.model.name == 'FigureModel') && (view.model.module == 'bqplot'));
             console.log('bqplot_figure_views', bqplot_figure_views);
             await Promise.all(bqplot_figure_views.map(async (view) => {
                 while(!view.mark_views) {

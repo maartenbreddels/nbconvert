@@ -154,6 +154,7 @@ class NPM(Command):
     targets = [
         os.path.join(here, 'nbconvert', 'resources', 'snapshot.js'),
     ]
+    sources = glob(os.path.join(here, 'src', '*.ts'))
 
     def initialize_options(self):
         pass
@@ -181,6 +182,14 @@ class NPM(Command):
         return self.has_npm()
 
     def run(self):
+        outdated = False
+        for target in self.targets:
+            for source in self.sources:
+                if os.path.getmtime(source) > os.path.getmtime(target):
+                    outdated = True
+        if not outdated:
+            print('all targets are up to date')
+            return
         has_npm = self.has_npm()
         if not has_npm:
             raise OSError("`npm` unavailable.  If you're running this command using sudo, make sure `npm` is available to sudo")
